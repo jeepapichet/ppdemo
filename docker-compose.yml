@@ -11,7 +11,6 @@ services:
       CONJUR_MASTER_ORGACCOUNT: "PuppetDemo"
     volumes:
       - ./:/src:z
-      #- ./conjur-init.sh:/src/conjur-init.sh:Z
     security_opt:
       - seccomp:unconfined
     ports:
@@ -27,7 +26,7 @@ services:
     environment:
       AUTOSIGN: "true"
       TERM: "xterm"
-      TZ: "Asia/Bangkok"
+      TZ: "UTC"
     hostname: puppet
     domainname: cyberark.local
     volumes:
@@ -41,12 +40,14 @@ services:
     hostname: prod-webapp
     depends_on: 
       - puppet
+    privileged: true
 
   dev-webapp:
     image: my-agentnode:1.0
     hostname: dev-webapp
     depends_on: 
       - puppet
+    privileged: true
 
   cli:
     environment:
@@ -58,18 +59,3 @@ services:
     hostname: conjurcli
     entrypoint: sleep
     command: infinity
-
-
-#  demo01:
-#    build: client/.
-#    networks:
-#      conjurnet:
-#    stdin_open: true
-#    tty: true
-
-#networks:
-#  puppetdemo:
-#     driver: bridge
-#     ipam:
-#       config:
-#         - subnet: 172.32.32.0/24

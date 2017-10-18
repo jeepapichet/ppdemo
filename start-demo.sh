@@ -6,9 +6,11 @@ main() {
   THISDOMAIN="cyberark.local"
 
   echo "-----"
-  echo "Bring up Conjur and Puppet Master"
-  echo "-----"
+  echo "Bring down all running services"
   docker-compose down
+
+  echo "-----"
+  echo "Bring up Conjur and Puppet Master"
   docker-compose up -d conjur
   docker-compose up -d puppet
   docker-compose up -d cli
@@ -33,34 +35,30 @@ main() {
   docker cp -L $CONJUR_CONT_ID:/opt/conjur/etc/ssl/conjur.pem /tmp/conjur.pem
 
   echo "-----"
-  echo "Copy certificate to CLI"
+  echo "Copy Conjur config and certificate to CLI"
   docker cp -L ./conjur.conf $CLI_CONT_ID:/etc/conjur.conf
   docker cp -L /tmp/conjur.pem $CLI_CONT_ID:/etc/conjur.pem
 
   echo "-----"
-  echo "Load Policy and secret value"
+  echo "Load demo policy and sample secret value"
   runIncli conjur authn login -u admin -p Cyberark1
   runIncli conjur bootstrap -q
   runIncli conjur policy load --as-group=security_admin /src/puppetdemo-policy.yml
 
-  runIncli conjur variable values add puppetdemo/dbpassword 'Pxn83kPARx1LO3lfios2'
-  runIncli conjur variable values add puppetdemo/secretkey '$e(re1Fr0mConjur'
+  runIncli conjur variable values add puppetdemo/dbpassword 'white rabbit'
+  runIncli conjur variable values add puppetdemo/secretkey 'Se(re1Fr0mConjur'
 
   echo "-----"
-  echo "Copy certificate to Puppet"
+  echo "Copy Conjur certificate to Puppet"
   docker cp -L /tmp/conjur.pem $PUPPET_CONT_ID:/etc/conjur.pem
 
   echo "-----"
   echo "Start demo webapp nodes"
-
   docker-compose up -d dev-webapp
   docker-compose up -d prod-webapp
 
   updatehostsfile $(docker-compose ps -q dev-webapp)
   updatehostsfile $(docker-compose ps -q prod-webapp)
-
-
-
 
 }
 
@@ -85,6 +83,7 @@ updatehostsfile() {
   local containername="$1"
   local processfile=/etc/hosts
   local tmpfile=/tmp/${1}.tmp
+  local knownhostsfile=~/.ssh/known_hosts
 
   conthostname=`docker inspect --format '{{ .Config.Hostname }}' $containername` 
   contipaddress=`docker inspect --format '{{ .NetworkSettings.Networks.ppdemo_default.IPAddress }}' $containername`
@@ -93,9 +92,11 @@ updatehostsfile() {
   grep -v $conthostname $processfile > $tmpfile
   echo -e $contipaddress '\t' $conthostname '\t' $conthostname'.'$THISDOMAIN >> $tmpfile
   mv $tmpfile $processfile
+
+  echo "---- Remove host from ssh knownhosts"
+  grep -v $conthostname $knownhostsfile > $tmpfile
+  mv $tmpfile $knownhostsfile
 }
-
-
 
 main "$@"
 

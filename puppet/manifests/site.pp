@@ -5,8 +5,8 @@ node default {
 node /^dev-webapp.*$/ {
     #Sample node with hardcode secret
 
-    $mysecretkey  = Sensitive('oL>3K+aX1kF')
-    $mydbpassword  = Sensitive('super magic dragon')
+    $mysecretkey  = Sensitive('H@rdC0de$e(e1')
+    $mydbpassword  = Sensitive('puff, the magic dragon')
 
     notify { "****** Secret key is: ${mysecretkey.unwrap} *******": }
     notify { "****** DB Password is: ${mydbpassword.unwrap} *******": }

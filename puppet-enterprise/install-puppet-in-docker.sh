@@ -6,7 +6,7 @@ IMAGE_NAME="registry.tld/puppet-enterprise:${PE_VERSION}"
 ADMIN_PASSWORD="Cyberark1"
 PUPPET_MASTER_HOSTNAME="puppet.cyberark.local"
 PE_DOWNLOAD_LINK="LINK_TO_PE_DOWNLOAD"
-TIMEZONE="Asia/Bangkok"
+TIMEZONE="UTC"
 ####### End Variables #######
 
 apt-get update
