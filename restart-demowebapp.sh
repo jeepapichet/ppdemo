@@ -8,8 +8,11 @@ main() {
   echo "Stop and restart prod/dev webapp containers"
 
   # Start container using docker-compose
-  docker-compose rm -sf prod-webapp
-  docker-compose rm -sf dev-webapp
+  docker-compose rm -f prod-webapp
+  docker-compose rm -f dev-webapp
+
+  docker-compose exec puppet puppet node purge prod-webapp"."$THISDOMAIN
+  docker-compose exec puppet puppet node purge dev-webapp"."$THISDOMAIN
 
   docker-compose up -d prod-webapp
   docker-compose up -d dev-webapp

@@ -43,7 +43,7 @@ services:
       - puppet
 
   dev-webapp:
-    image: registry.tld/agentnode:1
+    image: my-agentnode:1.0
     hostname: dev-webapp
     depends_on: 
       - puppet
@@ -52,7 +52,7 @@ services:
     environment:
       CONJUR_ACCOUNT: PuppetDemo
       CONJUR_APPLIANCE_URL: https://conjur/api
-    image: conjurcli:5.4.0
+    image: my-conjurcli:5.4.0
     volumes:
       - ./:/src:z
     hostname: conjurcli
