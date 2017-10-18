@@ -25,8 +25,8 @@ node /^prod-webapp.*$/ {
     class { conjur:
       appliance_url      => 'https://conjur/api',
       authn_login        => "host/${::trusted['hostname']}",
-      host_factory_token => Sensitive('1ven1vk3ggkkyy3mbz56j19jrcek3g8906a1fn5njd1wxeea034zqbxe'),
-      ssl_certificate    => file('/etc/conjur-ca.pem'),
+      host_factory_token => Sensitive('PLACE_HF_TOKEN_HERE'),
+      ssl_certificate    => file('/etc/conjur.pem'),
       version            => 4,
     }
 
