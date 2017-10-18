@@ -1,0 +1,19 @@
+- !policy
+  id: puppetdemo
+  annotations:
+    description: Policy for Puppet Demo
+  body:
+    - &variables
+      - !variable dbpassword
+      - !variable secretkey
+
+    - !layer &webserver webserver
+
+    - !host-factory
+      layers: [ *webserver ]
+
+    - !permit
+      role: *webserver
+      privilege: [ read, execute ]
+      resource: *variables
+

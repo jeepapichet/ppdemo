@@ -1,0 +1,75 @@
+version: '2'
+services:
+  conjur:
+    image: registry.tld/conjur-appliance:4.9.3.0
+    hostname: conjur
+    security_opt:
+      - label:seccomp:undefined
+    environment:
+      CONJUR_MASTER_HOSTNAME: "conjur.cyberark.local"
+      CONJUR_MASTER_PASSWORD: "Cyberark1"
+      CONJUR_MASTER_ORGACCOUNT: "PuppetDemo"
+    volumes:
+      - ./:/src:z
+      #- ./conjur-init.sh:/src/conjur-init.sh:Z
+    security_opt:
+      - seccomp:unconfined
+    ports:
+      - 443:443
+      - 636
+      - 5432
+    restart: always
+
+  puppet:
+    image: my-puppet-enterprise:2017.3.0
+    depends_on:
+      - "conjur"
+    environment:
+      AUTOSIGN: "true"
+      TERM: "xterm"
+      TZ: "Asia/Bangkok"
+    hostname: puppet
+    domainname: cyberark.local
+    volumes:
+      - ./puppet/manifests/:/etc/puppetlabs/code/environments/production/manifests/:Z
+      - ./puppet/modules/motd/:/etc/puppetlabs/code/environments/production/modules/motd/:Z
+    ports:
+      - 1443:443
+ 
+  prod-webapp:
+    image: my-agentnode:1.0
+    hostname: prod-webapp
+    depends_on: 
+      - puppet
+
+  dev-webapp:
+    image: registry.tld/agentnode:1
+    hostname: dev-webapp
+    depends_on: 
+      - puppet
+
+  cli:
+    environment:
+      CONJUR_ACCOUNT: PuppetDemo
+      CONJUR_APPLIANCE_URL: https://conjur/api
+    image: conjurcli:5.4.0
+    volumes:
+      - ./:/src:z
+    hostname: conjurcli
+    entrypoint: sleep
+    command: infinity
+
+
+#  demo01:
+#    build: client/.
+#    networks:
+#      conjurnet:
+#    stdin_open: true
+#    tty: true
+
+#networks:
+#  puppetdemo:
+#     driver: bridge
+#     ipam:
+#       config:
+#         - subnet: 172.32.32.0/24
