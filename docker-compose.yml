@@ -21,14 +21,16 @@ services:
 
   puppet:
     image: my-puppet-enterprise:2017.3.0
-    depends_on:
-      - "conjur"
     environment:
       AUTOSIGN: "true"
       TERM: "xterm"
       TZ: "UTC"
     hostname: puppet
     domainname: cyberark.local
+    networks: 
+      default: 
+        aliases:
+          - puppet.cyberark.local
     volumes:
       - ./puppet/manifests/:/etc/puppetlabs/code/environments/production/manifests/:Z
       - ./puppet/modules/motd/:/etc/puppetlabs/code/environments/production/modules/motd/:Z
@@ -38,15 +40,11 @@ services:
   prod-webapp:
     image: my-agentnode:1.0
     hostname: prod-webapp
-    depends_on: 
-      - puppet
     privileged: true
 
   dev-webapp:
     image: my-agentnode:1.0
     hostname: dev-webapp
-    depends_on: 
-      - puppet
     privileged: true
 
   cli:
