@@ -38,6 +38,7 @@ updatehostsfile() {
   mv $tmpfile $processfile
 
   echo "---- Remove host from ssh knownhosts"
+  touch $knownhostsfile
   grep -v $conthostname $knownhostsfile > $tmpfile
   mv $tmpfile $knownhostsfile
 }

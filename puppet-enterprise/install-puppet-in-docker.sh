@@ -1,7 +1,7 @@
 #!/bin/bash
 
 ####### Variables
-PE_VERSION="2017.3.0"
+PE_VERSION="2017.3.1"
 IMAGE_NAME="registry.tld/puppet-enterprise:${PE_VERSION}"
 ADMIN_PASSWORD="Cyberark1"
 PUPPET_MASTER_HOSTNAME="puppet.cyberark.local"
