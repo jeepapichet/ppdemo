@@ -20,7 +20,7 @@ services:
     restart: always
 
   puppet:
-    image: my-puppet-enterprise:2017.3.0
+    image: my-puppet-enterprise:2017.3.1
     environment:
       AUTOSIGN: "true"
       TERM: "xterm"
