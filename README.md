@@ -2,6 +2,9 @@
 This is a demo  integration of Puppet and Conjur using Conjur modulel from puppet forge. The demo includes sample webapp nodes that use hardcode secrets vs secrets retrieved from Conjur. 
 The demo also shows how Puppet module use HF token to automatically bootstrap machine identity for puppet node. 
 
+### Acknowledgments
+Puppet Enteprise build script is based on https://github.com/jefferyb/puppet-enterprise-in-docker
+
 ## Demo Requirements
 1. Linux host with Docker daemon and Docker Compose installed
 2. Conjur Enteprise 4.x image - Load the image to docker using `docker load -i conjur-appliance-4.9.3.0.tar`.  
@@ -50,6 +53,4 @@ To restart all services, reexecute `./start-demo.sh` again.
 
 To stop and remove all containers, `docker-compose down`
 
-### Acknowledgments
-Puppet Enteprise build script is based on https://github.com/jefferyb/puppet-enterprise-in-docker
 
