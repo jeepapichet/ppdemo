@@ -32,7 +32,7 @@ main() {
   echo "-----"
   echo "Get certificate from Conjur"
   rm -f /tmp/conjur.pem
-  docker cp -L $CONJUR_CONT_ID:/opt/conjur/etc/ssl/conjur.pem /tmp/conjur.pem
+  docker cp -L $CONJUR_CONT_ID:/opt/conjur/etc/ssl/conjur.pem /tmp
 
   echo "-----"
   echo "Copy Conjur config and certificate to CLI"

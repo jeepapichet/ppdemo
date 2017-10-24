@@ -40,11 +40,13 @@ services:
   prod-webapp:
     image: my-agentnode:1.0
     hostname: prod-webapp
+    domainname: cyberark.local
     privileged: true
 
   dev-webapp:
     image: my-agentnode:1.0
     hostname: dev-webapp
+    domainname: cyberark.local
     privileged: true
 
   cli:
