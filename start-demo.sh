@@ -4,6 +4,7 @@
 main() {
 
   THISDOMAIN="cyberark.local"
+  PROJECTNAME="ppdemo"   #change this if project folder not is not ppdemo
 
   echo "-----"
   echo "Bring down all running services"
@@ -18,12 +19,6 @@ main() {
   PUPPET_CONT_ID=$(docker-compose ps -q puppet)
   CONJUR_CONT_ID=$(docker-compose ps -q conjur)
   CLI_CONT_ID=$(docker-compose ps -q cli)
-
-  echo "-----"
-  echo "Update local hosts file on this machine"
-  updatehostsfile $CONJUR_CONT_ID
-  updatehostsfile $PUPPET_CONT_ID
-  updatehostsfile $CLI_CONT_ID
 
   echo "-----"
   echo "Initializing Conjur"
@@ -57,6 +52,8 @@ main() {
   docker-compose up -d dev-webapp
   docker-compose up -d prod-webapp
 
+  echo "-----"
+  echo "Update dev-webapp and prod-webapp container IP to local hosts file"
   updatehostsfile $(docker-compose ps -q dev-webapp)
   updatehostsfile $(docker-compose ps -q prod-webapp)
 
@@ -86,7 +83,7 @@ updatehostsfile() {
   local knownhostsfile=~/.ssh/known_hosts
 
   conthostname=`docker inspect --format '{{ .Config.Hostname }}' $containername` 
-  contipaddress=`docker inspect --format '{{ .NetworkSettings.Networks.ppdemo_default.IPAddress }}' $containername`
+  contipaddress=`docker inspect --format '{{ .NetworkSettings.Networks.'"$PROJECTNAME"'_default.IPAddress }}' $containername`
 
   echo "---- Update hosts file for $conthostname"
   grep -v $conthostname $processfile > $tmpfile
@@ -94,9 +91,7 @@ updatehostsfile() {
   mv $tmpfile $processfile
 
   echo "---- Remove host from ssh knownhosts"
-  touch $knownhostsfile
-  grep -v $conthostname $knownhostsfile > $tmpfile
-  mv $tmpfile $knownhostsfile
+  ssh-keygen -R $conthostname || true
 }
 
 main "$@"

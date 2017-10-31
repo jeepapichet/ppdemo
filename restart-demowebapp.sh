@@ -3,6 +3,7 @@
 main() {
 
   THISDOMAIN="cyberark.local"
+  PROJECTNAME="ppdemo"   #change this if project folder not is not ppdemo  
 
   echo "-----"
   echo "Stop and restart prod/dev webapp containers"
@@ -30,7 +31,7 @@ updatehostsfile() {
   local knownhostsfile=~/.ssh/known_hosts
 
   conthostname=`docker inspect --format '{{ .Config.Hostname }}' $containername`
-  contipaddress=`docker inspect --format '{{ .NetworkSettings.Networks.ppdemo_default.IPAddress }}' $containername`
+  contipaddress=`docker inspect --format '{{ .NetworkSettings.Networks.'"$PROJECTNAME"'_default.IPAddress }}' $containername`
 
   echo "---- Update hosts file for $conthostname"
   grep -v $conthostname $processfile > $tmpfile
@@ -38,9 +39,7 @@ updatehostsfile() {
   mv $tmpfile $processfile
 
   echo "---- Remove host from ssh knownhosts"
-  touch $knownhostsfile
-  grep -v $conthostname $knownhostsfile > $tmpfile
-  mv $tmpfile $knownhostsfile
+  ssh-keygen -R $conthostname || true
 }
 
 
