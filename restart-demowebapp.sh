@@ -3,7 +3,7 @@
 main() {
 
   THISDOMAIN="cyberark.local"
-  PROJECTNAME="ppdemo"   #change this if project folder not is not ppdemo  
+  PROJECTNAME="ppdemo"   #change this if project folder is not ppdemo  
 
   echo "-----"
   echo "Stop and restart prod/dev webapp containers"

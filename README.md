@@ -48,8 +48,8 @@ Conjur policy for the demo is already loaded. In this demo, there is sample mani
 5) Review new host identity in Conjur UI and audit activities. 
 
 
-The dev-webappa and prod-webapp can be restart wiht `./restart-demowebapp.sh`. This will remove and restart containers as well as purge those from Puppet Enterprise.
+The dev-webapp and prod-webapp can be restarted with `./restart-demowebapp.sh`. This will remove and restart containers as well as purge those from Puppet Enterprise.
 
-To restart all services, reexecute `./start-demo.sh` again.
+To restart all services, run `./start-demo.sh` again.
 
 To stop and remove all containers, `docker-compose down`  

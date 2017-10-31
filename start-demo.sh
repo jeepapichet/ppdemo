@@ -4,7 +4,7 @@
 main() {
 
   THISDOMAIN="cyberark.local"
-  PROJECTNAME="ppdemo"   #change this if project folder not is not ppdemo
+  PROJECTNAME="ppdemo"   #change this if project folder is not ppdemo
 
   echo "-----"
   echo "Bring down all running services"
