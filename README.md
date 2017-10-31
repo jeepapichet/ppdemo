@@ -6,8 +6,8 @@ The demo also shows how Puppet module use HF token to automatically bootstrap ma
 Puppet Enteprise build script is based on https://github.com/jefferyb/puppet-enterprise-in-docker
 
 ## Demo Requirements
-1. Linux host with Docker daemon and Docker Compose installed
-2. Folder from this repository - You may clone to your Linux host using `git clone https://github.com/jeepapichet/ppdemo`
+1. Linux host with Docker daemon and Docker Compose installed.
+2. Folder from this repository - You may clone it to your Linux host using `git clone https://github.com/jeepapichet/ppdemo`.
 3. Conjur Enteprise 4.x image - Load the image to docker using `docker load -i conjur-appliance-4.9.3.0.tar`.  
 Edit Conjur version in `docker-compose.yml` if using a different version. 
 4. Put Puppet Enterprise image in ppdemo/puppet-enterprise/ - This can be download from https://puppet.com/download-puppet-enterprise  
