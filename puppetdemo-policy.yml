@@ -10,7 +10,7 @@
     - !layer &webserver webserver
 
     - !host-factory
-      id: webserver_factory
+      id: webapp_factory
       layers: [ *webserver ]
 
     - !permit
