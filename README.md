@@ -44,7 +44,7 @@ Conjur policy for this demo is already loaded with startup script. There is samp
 1) Review manifest file in `puppet/manifests/site.pp`.
 2) SSH to dev-webappp (or `docker-compose exec dev-webapp /bin/bash`) then run `puppet agent -t` to apply configuration. The puppet simply dump hardcode password in too file at /etc/mysecretkey.
 3) Login to Conjur UI and review the puppetdemo policy.
-4) Create new hostfactory `conjur hostfactory tokens create --duration-days 1 puppetdemo/webapp_factory`. Copy token from the result and paste it to hostfactory parameter in `puppet/manifests/site.pp` file.
+4) Create new hostfactory `docker-compose exec cli conjur hostfactory tokens create --duration-days 1 puppetdemo/webapp_factory`. Copy token from the result and paste it to hostfactory parameter in `puppet/manifests/site.pp` file.
 5) SSH to prod-webapp (or `docker-compose exec prod-webapp /bin/bash`), and run `puppet agent -t` to apply configuraiton. Review that the node has machine identity (/etc/conjur.identity) and the secrets are fetched from Conjur.
 6) Review new host identity in Conjur UI and audit activities. 
 
