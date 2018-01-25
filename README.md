@@ -39,13 +39,14 @@ Conjur service is exposed on port 443 and puppet service is exposed on port 1443
 It may takes couple minutea for Puppet Master to start. To verify the service, try access the Web UI or check the logs from `docker-compose logs -f puppet`  
 The script also update /etc/hosts file on local machine to allow ssh to dev-webapp and prod-webapp container by service name. OS credential is root/Cyberark1.  
 
-## Running The Demo
-Conjur policy for the demo is already loaded. In this demo, there is sample manifest for two nodes. The dev-webapp show sample manifest using hardccode credential. The prod-webapp demonsntate how Conjur module is used to establish machine identity and fetch secret.
+## Running the Demo
+Conjur policy for this demo is already loaded with startup script. There is sample manifest for two nodes. The dev-webappis using hardcode credential. The prod-webapp demonstrate how Conjur module is used to establish machine identity and fetch secret.
 1) Review manifest file in `puppet/manifests/site.pp`.
 2) SSH to dev-webappp (or `docker-compose exec dev-webapp /bin/bash`) then run `puppet agent -t` to apply configuration. The puppet simply dump hardcode password in too file at /etc/mysecretkey.
-3) Login to Conjur UI and review the puppetdemo policy. Create new hostfactory under puppetdemo/webapp layer. Copy this host factory and paste it to hostfactory parameter in `puppet/manifests/site.pp` file.
-4) SSH to prod-webapp (or `docker-compose exec prod-webapp /bin/bash`), and run `puppet agent -t` to apply configuraiton. Review that the node has machine identity (/etc/conjur.identity) and the secrets are fetched from Conjur.
-5) Review new host identity in Conjur UI and audit activities. 
+3) Login to Conjur UI and review the puppetdemo policy.
+4) Create new hostfactory `conjur hostfactory tokens create --duration-days 1 puppetdemo/webapp_factory`. Copy token from the result and paste it to hostfactory parameter in `puppet/manifests/site.pp` file.
+5) SSH to prod-webapp (or `docker-compose exec prod-webapp /bin/bash`), and run `puppet agent -t` to apply configuraiton. Review that the node has machine identity (/etc/conjur.identity) and the secrets are fetched from Conjur.
+6) Review new host identity in Conjur UI and audit activities. 
 
 
 The dev-webapp and prod-webapp can be restarted with `./restart-demowebapp.sh`. This will remove and restart containers as well as purge those from Puppet Enterprise.
