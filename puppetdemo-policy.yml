@@ -10,10 +10,10 @@
     - !layer &webserver webserver
 
     - !host-factory
+      id: webserver_factory
       layers: [ *webserver ]
 
     - !permit
       role: *webserver
       privilege: [ read, execute ]
       resource: *variables
-
